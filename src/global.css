@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import url('https://fonts.cdnfonts.com/css/avenir-lt-std');
+@font-face {
+    font-family: 'Avenir_LT_Std';
+    src: url('./public/font/Avenir LT Std 45 Book.otf') format('opentype');
+    
+}
+:root {
+  --main-color: #000000;
+  --secondary-color: #FFFFFF;
+  --accent-color: #F2F2F2;
+  --font-family: 'Avenir_LT_Std', sans-serif;
+  
+}
+
+@theme{
+    --font-sans: var(--font-family);
+}
