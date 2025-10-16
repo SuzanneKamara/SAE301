@@ -2,21 +2,22 @@ import { ProductData } from "../../data/product.js";
 import { ProductView } from "../../ui/product/index.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import template from "./template.html?raw";
-import { HeaderView } from "../../ui/header/index.js";
+// import { HeaderView } from "../../ui/header/index.js";
 
 
 let M = {
     products: []
 };
 
-M.productsByCategory = async function(categoryId){
-    if (categoryId === 1){
-        M.products = await ProductData.fetchAll();
-    } else {
-        M.products = await ProductData.fetchByCategory(categoryId);
-    }
-    return M.products;
-}
+// M.productsByCategory = async function(categoryId){
+//     if (categoryId === 1){
+//         M.products = await ProductData.fetchAll();
+//     } else {
+//         M.products = await ProductData.fetchByCategory(categoryId);
+//     }
+//     return M.products;
+// }
+M.cats = await ProductData.fetchCategories();
 
 let C = {};
 
@@ -26,6 +27,7 @@ C.handler_clickOnProduct = function(ev){
         alert(`Le produit d'identifiant ${id} ? Excellent choix !`);
     }
 }
+
 // C.handler_clickOnCategory = async function(ev){
 //     console.log("Category ID:", id);
 //     if (ev.target.dataset.category !== undefined){
@@ -38,10 +40,20 @@ C.handler_clickOnProduct = function(ev){
 //     }
 // }
 
-C.init = async function(){
-    M.products = await ProductData.fetchAll(); 
+C.init = async function(param){
+    
+    for (let cat of M.cats){
+        if (cat.name == param.category){
+            console.log("Cat found:", cat);
+
+            M.products = await ProductData.fetchByCategory(cat.id);
+            console.log(M.products);
+        }
+    }
+
     return V.init( M.products );
 }
+
 
 
 let V = {};
@@ -76,15 +88,14 @@ V.createPageFragment = function( data ){
 V.attachEvents = function(pageFragment) {
     let root = pageFragment.firstElementChild;
     root.addEventListener("click", C.handler_clickOnProduct);
-    root.addEventListener("click", C.handler_clickOnCategory);
-    let header = HeaderView.dom();
-    header.addEventListener("click", C.handler_clickOnCategory);
+    // root.addEventListener("click", C.handlerRetrieveId);
+    // let header = HeaderView.dom();
+    // header.addEventListener("click", C.handler_clickOnCategory);
     return pageFragment;
 }
 
-export function ProductsPage(params) {
-    console.log("ProductsPage", params);
+export function ProductsCategoryPage(params) {
+    console.log("ProductsCategoryPage", params);
     return C.init(params);
 }
-
 

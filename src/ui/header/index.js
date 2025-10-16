@@ -18,7 +18,7 @@ let HeaderView = {
   dom: function () {
     let temp =htmlToFragment(template);
     temp.querySelector("template#nav").replaceWith(NavView.dom());
-    console.log(temp);
+  
     return temp;
     
     // return htmlToFragment(template);
