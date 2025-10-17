@@ -2,6 +2,7 @@ import { ProductData } from "../../data/product.js";
 import { ProductView } from "../../ui/product/index.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import template from "./template.html?raw";
+
 // import { HeaderView } from "../../ui/header/index.js";
 
 
@@ -18,6 +19,10 @@ let M = {
 //     return M.products;
 // }
 M.cats = await ProductData.fetchCategories();
+
+M.getProductAmount = async function(categoryId){
+    M.products = await ProductData.fetchProductsAmount(categoryId);
+}
 
 let C = {};
 
@@ -43,12 +48,15 @@ C.handler_clickOnProduct = function(ev){
 C.init = async function(param){
     
     for (let cat of M.cats){
-        if (cat.name == param.category){
-            console.log("Cat found:", cat);
-
-            M.products = await ProductData.fetchByCategory(cat.id);
-            console.log(M.products);
+        
+        if (param.category === "all"){
+            M.products = await ProductData.fetchAll();
+           
         }
+        else if (cat.name == param.category){
+            M.products = await ProductData.fetchByCategory(cat.id);
+        }
+       
     }
 
     return V.init( M.products );
@@ -57,10 +65,19 @@ C.init = async function(param){
 
 
 let V = {};
+V.renderAmount = function(fragment, data){
+    if (!fragment || !data) return;
+    const counter = fragment.querySelector('#counter');
+    if (counter) {
+        counter.textContent = `${data.length} ITEMS`;
+    }
+    return fragment;
+}
 
 V.init = function(data){
     let fragment = V.createPageFragment(data);
     V.attachEvents(fragment);
+    V.renderAmount(fragment, data);
     return fragment;
 }
 // V.renderCat = async function(data){

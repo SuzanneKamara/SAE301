@@ -81,5 +81,8 @@ ProductData.fetchCategories = async function(){
     let data = await getRequest('categories');
     return data==false ? fakeProducts : data;
 }
-
+ProductData.fetchProductsAmount = async function(categoryId){
+    let data = await getRequest('products?count&category='+categoryId);
+    return data==false ? fakeProducts : data;
+}
 export {ProductData};

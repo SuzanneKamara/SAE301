@@ -8,6 +8,15 @@ import { HeaderView } from "../../ui/header/index.js";
 let M = {
     products: []
 };
+let V = {};
+M.getProductAmount = async function(categoryId){
+    M.products = await ProductData.fetchProductsAmount(categoryId);
+}
+V.renderAmount=function(data){
+    let html= htmlToFragment(template);
+    html.querySelector('#counter').textContent = ` ${data.length} ITEMS`;
+    return html;
+}
 
 M.productsByCategory = async function(categoryId){
     if (categoryId === 1){
@@ -17,6 +26,8 @@ M.productsByCategory = async function(categoryId){
     }
     return M.products;
 }
+
+
 
 let C = {};
 
@@ -44,11 +55,12 @@ C.init = async function(){
 }
 
 
-let V = {};
+
 
 V.init = function(data){
     let fragment = V.createPageFragment(data);
     V.attachEvents(fragment);
+    V.renderAmount(data);
     return fragment;
 }
 // V.renderCat = async function(data){
