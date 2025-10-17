@@ -1,4 +1,5 @@
 import { ProductData } from "../../data/product.js";
+import {CategoryData} from "../../data/category.js";
 import { ProductView } from "../../ui/product/index.js";
 import { htmlToFragment } from "../../lib/utils.js";
 import template from "./template.html?raw";
@@ -8,6 +9,7 @@ import template from "./template.html?raw";
 
 let M = {
     products: []
+
 };
 
 // M.productsByCategory = async function(categoryId){
@@ -18,11 +20,8 @@ let M = {
 //     }
 //     return M.products;
 // }
-M.cats = await ProductData.fetchCategories();
 
-M.getProductAmount = async function(categoryId){
-    M.products = await ProductData.fetchProductsAmount(categoryId);
-}
+
 
 let C = {};
 
@@ -46,38 +45,39 @@ C.handler_clickOnProduct = function(ev){
 // }
 
 C.init = async function(param){
-    
-    for (let cat of M.cats){
+    M.products = await ProductData.fetchAll();
+        let catList = [];
         
-        if (param.category === "all"){
-            M.products = await ProductData.fetchAll();
+        if (param.id === "0"){
+            
            
         }
-        else if (cat.name == param.category){
-            M.products = await ProductData.fetchByCategory(cat.id);
+        else if (param.id !== "0"){
+           for (let elt of M.products){
+            if (elt.category.toString() == param.id){
+              catList.push(elt);
+            }
         }
-       
+       return V.init( catList );
     }
-
-    return V.init( M.products );
 }
+
+    
+
 
 
 
 let V = {};
-V.renderAmount = function(fragment, data){
-    if (!fragment || !data) return;
-    const counter = fragment.querySelector('#counter');
-    if (counter) {
-        counter.textContent = `${data.length} ITEMS`;
-    }
-    return fragment;
+V.renderAmount=function(data){
+    let html= htmlToFragment(template);
+    html.querySelector('#counter').textContent = ` ${data.length} ITEMS`;
+    return html;
 }
 
 V.init = function(data){
     let fragment = V.createPageFragment(data);
     V.attachEvents(fragment);
-    V.renderAmount(fragment, data);
+    V.renderAmount(data);
     return fragment;
 }
 // V.renderCat = async function(data){

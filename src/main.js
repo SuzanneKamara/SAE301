@@ -19,7 +19,7 @@ router.addRoute("/about", AboutPage);
 
 router.addRoute("/products", ProductsPage);
 router.addRoute("/products/:id/:slug", ProductDetailPage);
-router.addRoute("/products/:category", ProductsCategoryPage);
+router.addRoute("/category/:id/:category", ProductsCategoryPage);
 router.addRoute("*", The404Page);
 
 // Démarrer le routeur

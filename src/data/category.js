@@ -1,9 +1,9 @@
 import {getRequest} from '../lib/api-request.js';
 
 
-let ProductData = {};
+let CategoryData = {};
 
-let fakeProducts = [
+let fakeCategories = [
     {
         id: 1,
         name: "Marteau",
@@ -60,22 +60,14 @@ let fakeProducts = [
     }
 ]
 
-ProductData.fetch = async function(id){
-    let data = await getRequest('products/'+id);
-    return data==false ? fakeProducts.pop() : [data];
+CategoryData.fetch = async function(id){
+    let data = await getRequest('categories/'+id);
+    return data==false ? fakeCategories.pop() : [data];
 }
 
-ProductData.fetchAll = async function(){
-    let data = await getRequest('products');
-    return data==false ? fakeProducts : data;
-}
-ProductData.fetchByCategory = async function(categoryId){
-    let data = await getRequest('products?category='+categoryId);
-    return data==false ? fakeProducts : data;
+CategoryData.fetchAll = async function(){
+    let data = await getRequest('categories');
+    return data==false ? fakeCategories : data;
 }
 
-ProductData.fetchProductsAmount = async function(categoryId){
-    let data = await getRequest('products?count&category='+categoryId);
-    return data==false ? fakeProducts : data;
-}
-export {ProductData};
+export {CategoryData};
