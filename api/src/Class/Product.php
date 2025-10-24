@@ -19,6 +19,7 @@ class Product extends Entity {
     private ?string $collection = null; // id de la collection du produit (nullable)
     private ?int $price = null; // prix du produit (nullable)
     private ?string $image = null; // id de l'image du produit (nullable)
+    private ?string $description = null; // description du produit (nullable)
     public function __construct(int $id){
         $this->id = $id;
     }
@@ -62,8 +63,21 @@ class Product extends Entity {
             "statut" => $this->statut,
             "collection" => $this->collection,
             "price" => $this->price,
-            "image" => $this->image
+            "image" => $this->image,
+            "description" => $this->description,
+            "gallery" => $this->gallery
         ];
+    }
+
+   
+    private $gallery = [];
+    
+    public function addImageToGallery($filename) {
+        $this->gallery[] = $filename;
+    }
+    
+    public function getGallery() {
+        return $this->gallery;
     }
 
     /**
@@ -181,6 +195,22 @@ class Product extends Entity {
     public function getPrix(): ?int
     {
         return $this->price;
+    }
+    /**
+     * Get the value of description
+     */ 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }   
+    /**
+     * Set the value of description
+     *
+     * @return  self
+     */    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
     }
     
 }

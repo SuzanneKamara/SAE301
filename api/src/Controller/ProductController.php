@@ -1,4 +1,5 @@
 <?php
+
 require_once "src/Controller/EntityController.php";
 require_once "src/Repository/ProductRepository.php" ;
 
@@ -46,7 +47,14 @@ class ProductController extends EntityController {
         $p->setIdcategory($obj->category);
         $p->setCollection($obj->collection);
         $p->setPrix($obj->price);
-        $p->setImage($obj->image);
+        
+        // Gestion des images de la galerie
+        if (isset($obj->images) && is_array($obj->images)) {
+            foreach ($obj->images as $image) {
+                $p->addImageToGallery($image);
+            }
+        }
+        
         $ok = $this->products->save($p); 
         return $ok ? $p : false;
     }
